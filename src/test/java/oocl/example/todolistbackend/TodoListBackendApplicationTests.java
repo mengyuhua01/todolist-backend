@@ -1,6 +1,5 @@
 package oocl.example.todolistbackend;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import oocl.example.todolistbackend.repository.TodoListRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,6 +34,37 @@ class TodoListBackendApplicationTests {
         todoListRepository.clear();
     }
 
+    @Test
+    void should_create_todo_when_post_given_a_valid_body() throws Exception {
+
+        String requestBody = """
+                  {
+                       "text": "跑步"
+                  }
+                """;
+        mockMvc.perform(post("/todos")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.text").value("跑步"))
+                .andExpect(jsonPath("$.done").value(false));
+    }
+
+    @Test
+    void should_retrun_422_Unprocessable_when_post_given_a_empty_text() throws Exception {
+
+        String requestBody = """
+                  {
+                       "text": ""
+                  }
+                """;
+        mockMvc.perform(post("/todos")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+
 
     @Test
     void should_return_empty_array_when_findAll_given_no_parameters_and_data_no_exist() throws Exception {
@@ -42,5 +72,6 @@ class TodoListBackendApplicationTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(0));
     }
+
 
 }

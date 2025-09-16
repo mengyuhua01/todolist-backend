@@ -1,5 +1,6 @@
 package oocl.example.todolistbackend.controller;
 
+import jakarta.validation.Valid;
 import oocl.example.todolistbackend.dto.CreateToDoReq;
 import oocl.example.todolistbackend.repository.entity.ToDoListItem;
 import oocl.example.todolistbackend.servcie.TodoListService;
@@ -17,7 +18,7 @@ public class TodoListController {
     private TodoListService todoListService;
 
     @PostMapping("")
-    public ResponseEntity<ToDoListItem> createTodoItem(@RequestBody CreateToDoReq createToDoReq) {
+    public ResponseEntity<ToDoListItem> createTodoItem(@Valid  @RequestBody CreateToDoReq createToDoReq) {
         return ResponseEntity.status(HttpStatus.CREATED).body(todoListService.createTodoListItem(createToDoReq));
     }
     @GetMapping("")
