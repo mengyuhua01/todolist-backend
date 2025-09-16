@@ -220,11 +220,7 @@ class TodoListBackendApplicationTests {
         MvcResult mvcResult = resultActions.andReturn();
         String contentAsString = mvcResult.getResponse().getContentAsString();
         Long id = objectMapper.readTree(contentAsString).get("id").asLong();
-        String updateRequestBody = """
-                   {
-                       
-                   }
-                """;
+        String updateRequestBody = "{}";
         mockMvc.perform(put("/todos/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updateRequestBody))
