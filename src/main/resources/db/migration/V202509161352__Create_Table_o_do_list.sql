@@ -1,0 +1,7 @@
+CREATE TABLE todo_list
+(
+    id   BIGINT PRIMARY KEY AUTO_INCREMENT,
+    text VARCHAR(255),
+    done BOOLEAN
+);
+
