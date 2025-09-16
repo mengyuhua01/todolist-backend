@@ -27,4 +27,14 @@ public class TodoListRepositoryImp implements TodoListRepository {
     public ToDoListItem addTodoListItem(ToDoListItem toDoListItem) {
         return todoListJpaRepository.save(toDoListItem);
     }
+
+    @Override
+    public ToDoListItem getTodoListItemById(long id) {
+        return todoListJpaRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public ToDoListItem updateTodoListItem(ToDoListItem toDoListItem) {
+        return todoListJpaRepository.save(toDoListItem);
+    }
 }

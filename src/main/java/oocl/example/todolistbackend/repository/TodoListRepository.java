@@ -11,4 +11,8 @@ public interface TodoListRepository {
     void clear();
 
     ToDoListItem addTodoListItem(ToDoListItem toDoListItem);
+
+    ToDoListItem getTodoListItemById(long id);
+
+    ToDoListItem updateTodoListItem(ToDoListItem toDoListItem);
 }
