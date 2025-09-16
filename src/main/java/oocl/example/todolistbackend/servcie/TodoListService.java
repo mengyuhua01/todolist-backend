@@ -39,4 +39,12 @@ public class TodoListService {
         toDoListItem.setText(updateToDoReq.getText());
         return todoListRepository.updateTodoListItem(toDoListItem);
     }
+
+    public void deleteTodo(Long id) {
+        ToDoListItem toDoListItem = findTodoListItemById(id);
+        if (toDoListItem == null) {
+            throw new TodoNotFoundException("Todo item not found");
+        }
+        todoListRepository.deleteTodoListItemById(id);
+    }
 }

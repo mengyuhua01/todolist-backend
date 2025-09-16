@@ -222,7 +222,7 @@ class TodoListBackendApplicationTests {
         Long id = objectMapper.readTree(contentAsString).get("id").asLong();
         String updateRequestBody = """
                    {
-                        
+                       
                    }
                 """;
         mockMvc.perform(put("/todos/{id}", id)
@@ -230,5 +230,35 @@ class TodoListBackendApplicationTests {
                         .content(updateRequestBody))
                 .andExpect(status().isUnprocessableEntity());
     }
-}
 
+    @Test
+    void should_delete_todo_when_delete_given_existing_id() throws Exception {
+        String requestBody = """
+                  {
+                       "text": "要删除的任务"
+                  }
+                """;
+        ResultActions resultActions = mockMvc.perform(post("/todos")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.text").value("要删除的任务"))
+                .andExpect(jsonPath("$.done").value(false));
+        MvcResult mvcResult = resultActions.andReturn();
+        String contentAsString = mvcResult.getResponse().getContentAsString();
+        Long id = objectMapper.readTree(contentAsString).get("id").asLong();
+        mockMvc.perform(delete("/todos/{id}", id))
+                .andExpect(status().isNoContent());
+        mockMvc.perform(get("/todos")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(0));
+    }
+
+    @Test
+    void should_return_404_when_delete_given_non_existing_id() throws Exception {
+        // 尝试删除不存在的 todo
+        mockMvc.perform(delete("/todos/{id}", 999))
+                .andExpect(status().isNotFound());
+    }
+}
