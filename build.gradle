@@ -38,6 +38,16 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
+jacocoTestReport {
+    reports {
+        xml.required = true
+        csv.required = false
+        html.required = true
+    }
+}
+
+test.finalizedBy jacocoTestReport
+
 tasks.named('test') {
     useJUnitPlatform()
 }
